@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView,ImageBackground, TextInput, TouchableOpacity, Image} from 'react-native'
 import React,{useState, useEffect} from 'react'
-import {auth} from '../../firebase';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -10,9 +9,9 @@ const OnboardingScreen = () => {
     return (
     <>
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
-    <ImageBackground source={require('../../assets/pngs/BackgroundObjects.png')} resizeMode="cover" style={styles.image}>
+    <ImageBackground source={require('../../../assets/pngs/BackgroundObjects.png')} resizeMode="cover" style={styles.image}>
         <View style={styles.logo}>
-            <Image  source={require('../../assets/pngs/logo.png')}></Image>
+            <Image  source={require('../../../assets/pngs/logo.png')}></Image>
             <View style={[styles.inputContainer]}>
                 <Text style={[styles.textHeader]}>Welcome</Text>
                 <Text style={[styles.textSubtitle]}>Bridging communication gap seamlessly</Text>

@@ -1,17 +1,16 @@
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './src/screens/HomeScreen.js';
-import LoginScreen from './src/screens/LoginScreen.js';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useState } from 'react';
-import { SignedInStack, SignedOutStack } from './navigationStacks.js';
+import { SignedInStack, SignedOutStack } from './src/navigation/navigationStacks';
 import { auth } from './firebase.js';
 import { StatusBar } from 'expo-status-bar';
+
 SplashScreen.preventAutoHideAsync();
 
-
+const Tab = createBottomTabNavigator();
 function App(){
   const [appIsReady, setAppIsReady] = useState(false);
   const [loggedIn, setLoggedIn] = useState(null);

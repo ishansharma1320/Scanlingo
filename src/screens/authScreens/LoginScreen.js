@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView,ImageBackground, TextInput, TouchableOpacity} from 'react-native'
 import React,{useState, useEffect} from 'react'
-import {auth} from '../../firebase';
+import {auth} from '../../../firebase';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -40,7 +40,7 @@ const LoginScreen = () => {
     return (
     <>
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
-    <ImageBackground source={require('../../assets/pngs/BackgroundObjects.png')} resizeMode="cover" style={styles.image}>
+    <ImageBackground source={require('../../../assets/pngs/BackgroundObjects.png')} resizeMode="cover" style={styles.image}>
       <View style={[styles.inputContainer]}>
         <Text style={[styles.textHeader]}>Hi, Welcome Back! 👋</Text>
         <Text style={[styles.textSubtitle]}>Hello Again, You have been missed</Text>
