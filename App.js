@@ -3,38 +3,65 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/HomeScreen.js';
 import LoginScreen from './src/screens/LoginScreen.js';
-import { useFonts } from 'expo-font';
+import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCallback } from 'react';
-import RegisterScreen from './src/screens/RegisterScreen.js';
-import OnboardingScreen from './src/screens/OnboardingScreen.js';
-
+import { useCallback, useEffect, useState } from 'react';
+import { SignedInStack, SignedOutStack } from './navigationStacks.js';
+import { auth } from './firebase.js';
+import { StatusBar } from 'expo-status-bar';
 SplashScreen.preventAutoHideAsync();
-const Stack = createNativeStackNavigator();
+
 
 function App(){
-  const [fontsLoaded] = useFonts({
-    'doppio-one': require('./assets/fonts/DoppioOne-Regular.ttf')
-  });
+  const [appIsReady, setAppIsReady] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(null);
+  
+  
+  useEffect(()=>{
+    async function prepare() {
+      try {
+        
+        await Font.loadAsync({
+          'doppio-one': require('./assets/fonts/DoppioOne-Regular.ttf')
+        });
+        
+        
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Tell the application to render
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+    
+    
+   return auth.onAuthStateChanged(user=>setLoggedIn(user));
+  },[]);
+  
+  
+  
+  
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (appIsReady) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [appIsReady]);
 
-  if (!fontsLoaded) {
+  if (!appIsReady) {
     return null;
   }
   
+
   return (
+    <>
+    <StatusBar style="dark" />
     <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator initialRouteName='Onboarding'>
-        <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen}></Stack.Screen>
-        <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen}></Stack.Screen>
-        <Stack.Screen options={{headerShown: false}} name="Register" component={RegisterScreen}></Stack.Screen>
-        <Stack.Screen options={{headerShown: false}} name="Onboarding" component={OnboardingScreen}></Stack.Screen>
-      </Stack.Navigator>
+      {loggedIn ?  <SignedInStack /> : <SignedOutStack />}
     </NavigationContainer>
+    </>
+    
   )
 }
 export default App;
