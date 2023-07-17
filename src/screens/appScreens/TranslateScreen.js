@@ -34,8 +34,8 @@ const TranslateScreen = () => {
              </View>
           {/* Header Container Ends */} 
           <View style={styles.spacer_10}></View>
-            <View style={[{justifyContent: 'space-between',alignContent: 'center',flexDirection: 'row', width: '90%'}]}>
-         <View style={{ width: '35%'}}>
+            <View style={[{justifyContent: 'space-between',alignContent: 'center',flexDirection: 'row', width: '90%', zIndex: 1}]}>
+         <View style={{ width: '35%',zIndex: 2}}>
          <DropDownPicker
             open={open}
             value={value}
@@ -45,7 +45,7 @@ const TranslateScreen = () => {
             setItems={setItems}
             style={{
                 backgroundColor: "#FEE6AA",
-                borderWidth: 0
+                borderWidth: 0,
             }}
             textStyle={{
                 // both for selected and those of dropdown
@@ -54,7 +54,7 @@ const TranslateScreen = () => {
         />
          </View>
         <Image source={require('../../../assets/pngs/TranslateIcon.png')}></Image>
-        <View style={{ width: '35%'}}>
+        <View style={{ width: '35%',zIndex: 2}}>
          <DropDownPicker
             open={open}
             value={value}
@@ -64,7 +64,8 @@ const TranslateScreen = () => {
             setItems={setItems}
             style={{
                 backgroundColor: "#FEE6AA",
-                borderWidth: 0
+                borderWidth: 0,
+                zIndex: '100'
             }}
             textStyle={{
                 // both for selected and those of dropdown
