@@ -57,8 +57,11 @@ function App(){
     <>
     <StatusBar style="dark" />
     <NavigationContainer onReady={onLayoutRootView}>
-      {loggedIn ?  <SignedInStack /> : <SignedOutStack />}
+    <SignedInStack />
+      {/* {loggedIn ?  <SignedInStack /> : <SignedOutStack />} */}
     </NavigationContainer>
+    
+    
     </>
     
   )

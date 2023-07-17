@@ -21,7 +21,7 @@ export default function HomeScreen() {
       <ImageBackground source={require('../../../assets/pngs/BackgroundObjects.png')} resizeMode="cover" style={styles.image}>
      {/* Header Container Starts */}
           <View style={[styles.headerContainer]}>
-            <Pressable >
+            <Pressable onPress={()=>navigation.navigate("UserProfile")}>
               <Image source={require('../../../assets/pngs/UserIcon.png')}></Image>
             </Pressable>
             <Text style={[styles.appTextHeader]}>ScanLingo</Text>
@@ -39,14 +39,14 @@ export default function HomeScreen() {
 
         <View style={styles.spacer_10}></View>
         <View style={[{justifyContent: 'center',width: '90%', backgroundColor: '#034153', height: '45%', borderRadius: 10, padding: 20}]}>
-          <Pressable style={{height: '45%',backgroundColor: '#FEE6AA', borderRadius: 10, justifyContent: 'center'}}>
+          <Pressable  onPress={()=>{navigation.navigate("Text")}} style={{height: '45%',backgroundColor: '#FEE6AA', borderRadius: 10, justifyContent: 'center'}}>
               
               <Image  style={{alignSelf: 'center'}} source={require('../../../assets/pngs/TextIcon.png')}></Image>
               <Text style={{color: '#056174', fontFamily: 'doppio-one', fontSize: 16, textAlign: 'center'}}> Text </Text>
               
               
           </Pressable>
-          <Pressable style={{marginTop: 20, height: '45%',backgroundColor: '#FEE6AA',borderRadius: 10, justifyContent: 'center'}}>
+          <Pressable onPress={()=>{navigation.navigate("Image")}} style={{marginTop: 20, height: '45%',backgroundColor: '#FEE6AA',borderRadius: 10, justifyContent: 'center'}}>
           {/* <View > */}
               <Image  style={{alignSelf: 'center'}} source={require('../../../assets/pngs/ImageIcon.png')}></Image>
               <Text style={{color: '#056174', fontFamily: 'doppio-one', fontSize: 16, textAlign: 'center' }}> Image </Text>

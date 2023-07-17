@@ -19,14 +19,7 @@ const RegisterScreen = () => {
     }
 
     const navigation = useNavigation();
-    useEffect(() => {
-        const stateChange = auth.onAuthStateChanged(user => {
-            if (user) {
-                navigation.navigate("Home");
-            }
-        })
-        return stateChange;
-    }, [])
+    
 
     const handleLogin = function () {
         auth.signInWithEmailAndPassword(email, password)
@@ -46,6 +39,26 @@ const RegisterScreen = () => {
                         <Text style={[styles.textSubtitle]}>Start Translating Today!</Text>
                     </View>
                     <View style={styles.spacer}></View>
+                    <View style={[styles.inputContainer,{flexDirection: 'row'}]}>
+                    <View style={{flex:1,marginRight: 10, width: '100%'}}>
+                    <Text style={styles.textLabel}> First Name </Text>
+                    <TextInput
+                                    placeholder="First Name"
+                                    style={[styles.input]}
+                                    value={email}
+                                    onChangeText={text => setEmail(text)}
+                                />
+                    </View>
+                    <View style={{flex:1}}>
+                    <Text style={styles.textLabel}> Last Name </Text>
+                    <TextInput
+                                    placeholder="Last Name"
+                                    style={[styles.input]}
+                                    value={email}
+                                    onChangeText={text => setEmail(text)}
+                                />
+                    </View>
+                    </View>
                     <View style={styles.inputContainer}>
                   
                         <View style={styles.inputFieldContainer}>

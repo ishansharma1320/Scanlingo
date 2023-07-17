@@ -19,14 +19,6 @@ const LoginScreen = () => {
   }
 
   const navigation = useNavigation();
-  useEffect(()=>{
-    const stateChange = auth.onAuthStateChanged(user=>{
-        if(user){
-            navigation.navigate("Home");
-        }
-    })
-    return stateChange;
-  },[])
 
   const handleLogin = function () {
     auth.signInWithEmailAndPassword(email,password)
