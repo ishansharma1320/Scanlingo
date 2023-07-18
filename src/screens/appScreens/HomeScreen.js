@@ -6,14 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function HomeScreen() {
 
   const navigation = useNavigation();
-
-  const handleLogout = function () {
-    auth.signOut().then(() => {
-      navigation.replace("Login");
-    }).catch((error) => {
-      console.log(error);
-    })
-  }
+ 
   return (
 
     <>

@@ -9,6 +9,7 @@ import OnboardingScreen from '../screens/authScreens/OnboardingScreen.js';
 import TranslateScreen from '../screens/appScreens/TranslateScreen';
 import UserProfileScreen from '../screens/appScreens/UserProfileScreen.js';
 import { auth } from '../../firebase.js';
+import { getItemAsync, deleteItemAsync } from "expo-secure-store";
 const Stack = createNativeStackNavigator();
 
 const SignedOutStack = () => {
@@ -29,6 +30,11 @@ const SignedInStack = () => {
     const handleSignout = async ()=>{
       try {
         await auth.signOut();
+        let uid = await getItemAsync("user_id");
+        console.log(uid);
+        await deleteItemAsync("user_id");
+        uid = await getItemAsync("user_id");
+        console.log(uid);
       } catch(e){
         console.error(e);
       }

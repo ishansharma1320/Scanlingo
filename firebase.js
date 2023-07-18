@@ -2,6 +2,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { apiKey,appId,messagingSenderId } from '@env'
+import {getFirestore} from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,7 +25,7 @@ if(firebase.apps.length === 0){
     app = firebase.app();
 }
 // Initialize Firebase
-
+const db = getFirestore(app);
 const auth = firebase.auth();
 
-export  { auth };
+export  { auth, db };

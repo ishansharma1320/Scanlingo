@@ -1,21 +1,29 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView, ImageBackground, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { auth } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 import { useNavigation } from '@react-navigation/native';
-
+import { doc, setDoc } from "firebase/firestore";
+import { setItemAsync } from "expo-secure-store";
 
 const RegisterScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
 
-    const handleSignUp = function () {
-        auth.createUserWithEmailAndPassword(email, password)
-            .then(userCredentials => {
-                const user = userCredentials.user;
-                console.log(`Registered with user: ${user.email}`);
-            }).catch((error) => {
-                console.log(error);
-            })
+    const handleSignUp = async function () {
+        try{
+            let userCredentials =  await auth.createUserWithEmailAndPassword(email, password)
+            let user = userCredentials.user;
+            const docRef = await setDoc(doc(db, "users", user.uid), {
+                user_id: user.uid, firstName: firstName, lastName: lastName, email: user.email
+              });
+            console.log("Document written with ID: ", docRef.id);
+            console.log(`Registered with user: ${user.email}`);
+            await setItemAsync("user_id", user.uid);
+          } catch (e){
+              console.error(e);
+          }
     }
 
     const navigation = useNavigation();
@@ -35,8 +43,8 @@ const RegisterScreen = () => {
                     <TextInput
                                     placeholder="First Name"
                                     style={[styles.input]}
-                                    value={email}
-                                    onChangeText={text => setEmail(text)}
+                                    value={firstName}
+                                    onChangeText={text => setFirstName(text)}
                                 />
                     </View>
                     <View style={{flex:1}}>
@@ -44,8 +52,8 @@ const RegisterScreen = () => {
                     <TextInput
                                     placeholder="Last Name"
                                     style={[styles.input]}
-                                    value={email}
-                                    onChangeText={text => setEmail(text)}
+                                    value={lastName}
+                                    onChangeText={text => setLastName(text)}
                                 />
                     </View>
                     </View>

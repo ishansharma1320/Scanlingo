@@ -2,22 +2,23 @@ import { StyleSheet, Text, View, KeyboardAvoidingView,ImageBackground, TextInput
 import React,{useState, useEffect} from 'react'
 import {auth} from '../../../firebase';
 import { useNavigation } from '@react-navigation/native';
-
-
+import { setItemAsync } from "expo-secure-store";
 const LoginScreen = () => {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
 
   const navigation = useNavigation();
 
-  const handleLogin = function () {
-    auth.signInWithEmailAndPassword(email,password)
-    .then(userCredentials=>{
-        const user = userCredentials.user;
-        console.log(`Logged in with user: ${user.email}`);
-    }).catch((error)=>{
-        console.log(error);
-      })
+  const handleLogin = async function () {
+    try{
+      let userCredentials = await auth.signInWithEmailAndPassword(email,password)
+      const user = userCredentials.user;
+      console.log(`Logged in with user: ${user.email}`);
+      await setItemAsync("user_id", user.uid);
+    } catch(e){
+      console.error(e)
+    }
+    
   }
     return (
     <>
