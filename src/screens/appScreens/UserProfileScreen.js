@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, KeyboardAvoidingView, ImageBackground, TextInput, Pressable, Image } from 'react-native'
+import { StyleSheet, Text, View, KeyboardAvoidingView, ImageBackground, TextInput, Pressable, Image,TouchableOpacity } from 'react-native'
 import {useState} from 'react'
 
-const UserProfileScreen = () => {
+const UserProfileScreen = ({route}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const { handleSignout } = route.params;
   return (
     <>
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
@@ -65,7 +65,11 @@ const UserProfileScreen = () => {
                     />
                 </View>
             </View>
-            
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={handleSignout}>
+                        <Text style={styles.buttonText}>Logout</Text>
+                </TouchableOpacity>           
+            </View>
         </ImageBackground>
     </KeyboardAvoidingView>
 

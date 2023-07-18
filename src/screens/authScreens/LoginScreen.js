@@ -8,16 +8,6 @@ const LoginScreen = () => {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
 
-  const handleSignUp = function () {
-    auth.createUserWithEmailAndPassword(email,password)
-    .then(userCredentials=>{
-        const user = userCredentials.user;
-        console.log(`Registered with user: ${user.email}`);
-    }).catch((error)=>{
-        console.log(error);
-      })
-  }
-
   const navigation = useNavigation();
 
   const handleLogin = function () {
