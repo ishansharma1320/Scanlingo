@@ -4,6 +4,7 @@ import { auth, db } from '../../../firebase';
 import { useNavigation } from '@react-navigation/native';
 import { doc, setDoc } from "firebase/firestore";
 import { setItemAsync } from "expo-secure-store";
+import {createUserData} from "../../api/UserClient";
 
 const RegisterScreen = () => {
     const [email, setEmail] = useState('');
@@ -14,13 +15,18 @@ const RegisterScreen = () => {
     const handleSignUp = async function () {
         try{
             let userCredentials =  await auth.createUserWithEmailAndPassword(email, password)
-            let user = userCredentials.user;
-            const docRef = await setDoc(doc(db, "users", user.uid), {
-                user_id: user.uid, firstName: firstName, lastName: lastName, email: user.email
-              });
-            console.log("Document written with ID: ", docRef.id);
-            console.log(`Registered with user: ${user.email}`);
-            await setItemAsync("user_id", user.uid);
+            let currentUser = auth.currentUser;
+            let idToken = currentUser ? await currentUser.getIdToken(): null;
+            let json = null;
+            if(idToken){
+                const response = await createUserData(idToken, {email,firstName, lastName});
+                json = await response.json();
+                console.log({event: "Created User Data", page: "RegisterScreen", json})
+            }
+            
+            if(json && json.status === true && json.response && json.response.message){
+                await setItemAsync("user", JSON.stringify(json.response.message));
+              }
           } catch (e){
               console.error(e);
           }

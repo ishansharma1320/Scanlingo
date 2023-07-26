@@ -1,18 +1,57 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView, ImageBackground, TextInput, Pressable, Image, TouchableOpacity } from 'react-native'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-
+import {getUserData, updateUserData} from "../../api/UserClient";
+import { auth } from '../../../firebase';
+import { getItemAsync } from "expo-secure-store";
 const UserProfileScreen = ({ route }) => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    // const [password, setPassword] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const { handleSignout } = route.params;
     const navigation = useNavigation();
 
-    const handleSubmit = ()=>{
-        console.log({email, password, firstName, lastName});
+
+    useEffect(()=>{
+        (async ()=>{
+            try{
+                let user = await getItemAsync("user");
+                console.log({event: "Got User Data from secure storage",page: "UserProfileScreen", user});
+                if(!user){
+                    let currentUser = auth.currentUser;
+                    let idToken = currentUser ? await currentUser.getIdToken(): null;
+                    let json = null;
+                    if(idToken){
+                        let response = await getUserData(idToken);
+                        json = await response.json();
+                        console.log({event: "Queried User Data", page: "UserProfileScreen", json})
+                        setFirstName(json.firstName);
+                        setLastName(json.lastName);
+                        setEmail(json.email);
+                    }
+            } else {
+                user = JSON.parse(user);
+                setFirstName(user.firstName);
+                setLastName(user.lastName);
+                setEmail(user.email);
+            }
+            } catch(err){
+                console.error(err);
+            }
+        })();
+    },[])
+
+
+    const handleSubmit =async ()=>{
+        let currentUser = auth.currentUser;
+        let idToken = currentUser ? await currentUser.getIdToken(): null;
+        let json = null;
+        if(idToken){
+            let response = await updateUserData(idToken, {firstName, lastName})
+            json = await response.json();
+        }
         setIsEditing(false);
     }
     return (
@@ -59,15 +98,15 @@ const UserProfileScreen = ({ route }) => {
 
                             <Text style={styles.textLabel}> Email Address</Text>
                             <TextInput
-                                editable={isEditing}
+                                editable={false}
                                 placeholder="Email"
-                                style={[styles.input, !isEditing && {backgroundColor: '#DBDBDB', borderColor: 'gray'}]}
+                                style={[styles.input, {backgroundColor: '#DBDBDB', borderColor: 'gray'}]}
                                 value={email}
                                 onChangeText={text => setEmail(text)}
                             />
 
                         </View>
-                        <View>
+                        {/* <View>
                             <Text style={styles.textLabel}> Password </Text>
                             <TextInput
                                 editable={isEditing}
@@ -77,7 +116,7 @@ const UserProfileScreen = ({ route }) => {
                                 onChangeText={text => setPassword(text)}
                                 secureTextEntry
                             />
-                        </View>
+                        </View> */}
                     </View>
                     <View style={styles.buttonContainer}>
                         {isEditing && (<TouchableOpacity style={styles.button} onPress={handleSignout}>

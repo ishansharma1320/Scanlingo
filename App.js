@@ -36,7 +36,10 @@ function App(){
     prepare();
     
     
-   return auth.onAuthStateChanged(user=>setLoggedIn(user));
+   return auth.onAuthStateChanged(user=>{
+    console.log("user: ",user);
+    setLoggedIn(user);
+   });
   },[]);
   
   

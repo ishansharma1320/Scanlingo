@@ -3,6 +3,7 @@ import React,{useState, useEffect} from 'react'
 import {auth} from '../../../firebase';
 import { useNavigation } from '@react-navigation/native';
 import { setItemAsync } from "expo-secure-store";
+import { getUserData } from '../../api/UserClient';
 const LoginScreen = () => {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
@@ -12,9 +13,19 @@ const LoginScreen = () => {
   const handleLogin = async function () {
     try{
       let userCredentials = await auth.signInWithEmailAndPassword(email,password)
-      const user = userCredentials.user;
-      console.log(`Logged in with user: ${user.email}`);
-      await setItemAsync("user_id", user.uid);
+      let currentUser = auth.currentUser
+      let idToken = currentUser ? await currentUser.getIdToken(): null;
+      
+      let json = null;
+      if(idToken){
+        let response = await getUserData(idToken);
+        json = await response.json();
+        console.log({event: "Queried User Data", page: "LoginScreen", json})
+      }
+      if(json && json.status === true && json.response && json.response.message){
+        await setItemAsync("user", JSON.stringify(json.response.message));
+      }
+      
     } catch(e){
       console.error(e)
     }

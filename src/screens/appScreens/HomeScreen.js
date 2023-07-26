@@ -2,10 +2,38 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, KeyboardAvoidingView, ImageBackground, TextInput, TouchableOpacity, Pressable, Image } from 'react-native'
 import { auth } from '../../../firebase';
 import { useNavigation } from '@react-navigation/native';
+import { useEffect,useState } from 'react';
+import {getUserData} from "../../api/UserClient";
+import {getItemAsync} from "expo-secure-store"
 
 export default function HomeScreen() {
-
+  const [firstName, setFirstName] = useState("");
   const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+     try{
+      let user = await getItemAsync("user");
+      console.log({event: "Got User Data from secure storage",page: "HomeScreen", user});
+      if (!user) {
+        let currentUser = auth.currentUser;
+        let idToken = currentUser ? await currentUser.getIdToken() : null;
+        let json = null;
+        if (idToken) {
+          let response = await getUserData(idToken);
+          json = await response.json();
+          console.log({ event: "Queried User Data", page: "HomeScreen", json });
+          setFirstName(json.firstName);
+        }
+      } else {
+        user = JSON.parse(user);
+        setFirstName(user.firstName);
+      }
+     } catch(err){
+      console.error(err);
+     }
+    })();
+  }, []);
  
   return (
 
@@ -25,7 +53,7 @@ export default function HomeScreen() {
        {/* Header Container Ends */} 
     <View style={styles.spacer_30}></View>
        <View style={[styles.inputContainer]}>
-                <Text style={[styles.textHeader]}>Hi, Welcome! 👋</Text>
+                <Text style={[styles.textHeader]}>Hi {firstName}, Welcome! 👋</Text>
                 <View style={styles.spacer_20}></View>
                 <Text style={[styles.textSubtitle]}>What would you like to translate today?</Text>
             </View>
