@@ -29,7 +29,7 @@ const HomeTabs = () => {
       })}>
       
         <Tabs.Screen name="Home" component={HomeScreen}></Tabs.Screen>
-        <Tabs.Screen name="Bookmarks" component={BookmarksScreen}></Tabs.Screen>
+        {/* <Tabs.Screen name="Bookmarks" component={BookmarksScreen}></Tabs.Screen> */}
       
     </Tabs.Navigator>
   )

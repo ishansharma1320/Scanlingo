@@ -67,12 +67,12 @@ export default function HomeScreen() {
               
               
           </Pressable>
-          <Pressable onPress={()=>{navigation.navigate("Image")}} style={{marginTop: 20, height: '45%',backgroundColor: '#FEE6AA',borderRadius: 10, justifyContent: 'center'}}>
-          {/* <View > */}
+          {/* <Pressable onPress={()=>{navigation.navigate("Image")}} style={{marginTop: 20, height: '45%',backgroundColor: '#FEE6AA',borderRadius: 10, justifyContent: 'center'}}>
+          
               <Image  style={{alignSelf: 'center'}} source={require('../../../assets/pngs/ImageIcon.png')}></Image>
               <Text style={{color: '#056174', fontFamily: 'doppio-one', fontSize: 16, textAlign: 'center' }}> Image </Text>
-              {/* </View> */}
-          </Pressable>
+              
+          </Pressable> */}
         </View>
             
       </ImageBackground>

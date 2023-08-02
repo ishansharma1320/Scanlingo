@@ -17,26 +17,21 @@ const UserProfileScreen = ({ route }) => {
     useEffect(()=>{
         (async ()=>{
             try{
-                let user = await getItemAsync("user");
-                console.log({event: "Got User Data from secure storage",page: "UserProfileScreen", user});
-                if(!user){
-                    let currentUser = auth.currentUser;
-                    let idToken = currentUser ? await currentUser.getIdToken(): null;
-                    let json = null;
-                    if(idToken){
-                        let response = await getUserData(idToken);
-                        json = await response.json();
-                        console.log({event: "Queried User Data", page: "UserProfileScreen", json})
-                        setFirstName(json.firstName);
-                        setLastName(json.lastName);
-                        setEmail(json.email);
-                    }
-            } else {
-                user = JSON.parse(user);
-                setFirstName(user.firstName);
-                setLastName(user.lastName);
-                setEmail(user.email);
-            }
+                
+                console.log({event: "Got User Data from secure storage",page: "UserProfileScreen"});
+                let currentUser = auth.currentUser;
+                let idToken = currentUser ? await currentUser.getIdToken(): null;
+                let json = null;
+                if(idToken){
+                    let response = await getUserData(idToken);
+                    json = await response.json();
+                    console.log({event: "Queried User Data", page: "UserProfileScreen", json})
+                    setFirstName(json.firstName);
+                    setLastName(json.lastName);
+                    setEmail(json.email);   
+                    
+                }
+            
             } catch(err){
                 console.error(err);
             }
@@ -119,7 +114,7 @@ const UserProfileScreen = ({ route }) => {
                         </View> */}
                     </View>
                     <View style={styles.buttonContainer}>
-                        {isEditing && (<TouchableOpacity style={styles.button} onPress={handleSignout}>
+                        {isEditing && (<TouchableOpacity style={styles.button} onPress={handleSubmit}>
                             <Text style={styles.buttonText}>Submit</Text>
                         </TouchableOpacity>)}
                         <TouchableOpacity style={styles.button} onPress={handleSignout}>
